@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crossroads Journal</title>
+<meta name="description" content="Crossroads Journal: a collaborative, multimedia journal from the Great Lakes region reimagining the intersection of Humanity, Technology, and the Environment. Volume 1 focuses on data centers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CROSSROADS JOURNAL — single-file site
+   Colors live here as tokens. Light theme first, dark below.
+   ============================================================ */
+:root{
+  --paper:#f5f0e6;
+  --paper-2:#e9e2d2;
+  --card:#fbf8f2;
+  --ink:#1e2621;
+  --ink-soft:#48534c;
+  --line:#d3c9b5;
+  --moss:#3b5a41;      /* Environment */
+  --clay:#9a4722;      /* Humanity   */
+  --water:#2a5e6e;     /* Technology */
+  --leaf:#6f8f5a;      /* decorative foliage only */
+  --on-accent:#ffffff; /* text on clay buttons */
+  --ph-bg:#fff3c9;
+  --ph-ink:#6b4f00;
+  --radius:10px;
+  --maxw:1120px;
+  --serif:"Fraunces", Georgia, "Times New Roman", serif;
+  --sans:"Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141a16; --paper-2:#1a221d; --card:#202a24; --ink:#ece6da; --ink-soft:#b9bfb3;
+    --line:#35423a; --moss:#9cc4a2; --clay:#e8946a; --water:#86c0cf; --leaf:#6f9a6a; --on-accent:#141a16;
+    --ph-bg:#3a3217; --ph-ink:#f1d27a;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141a16; --paper-2:#1a221d; --card:#202a24; --ink:#ece6da; --ink-soft:#b9bfb3;
+  --line:#35423a; --moss:#9cc4a2; --clay:#e8946a; --water:#86c0cf; --leaf:#6f9a6a; --on-accent:#141a16;
+  --ph-bg:#3a3217; --ph-ink:#f1d27a;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--water);text-underline-offset:3px}
+a:hover{color:var(--clay)}
+:focus-visible{outline:3px solid var(--water);outline-offset:2px;border-radius:4px}
+h1,h2,h3,h4{font-family:var(--serif);line-height:1.15;margin:0 0 .5em;font-weight:600;letter-spacing:-.01em}
+h1{font-size:clamp(2.3rem,6vw,4.4rem)}
+h2{font-size:clamp(1.75rem,3.6vw,2.6rem)}
+h3{font-size:1.3rem}
+p{margin:0 0 1em}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+.narrow{max-width:760px}
+.eyebrow{font-family:var(--sans);font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--clay);margin-bottom:.8em;display:block}
+.lede{font-size:1.22rem;color:var(--ink-soft);max-width:680px}
+.muted{color:var(--ink-soft)}
+.small{font-size:.9rem}
+.skip{position:absolute;left:-999px}
+.skip:focus{left:10px;top:10px;background:var(--ink);color:var(--paper);padding:8px 12px;z-index:100}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+
+/* placeholders: where info still needs to be filled in */
+.ph{background:var(--ph-bg);color:var(--ph-ink);border:1px dashed currentColor;border-radius:4px;padding:1px 6px;font-size:.92em;font-style:italic}
+.ph-block{background:var(--ph-bg);color:var(--ph-ink);border:1px dashed currentColor;border-radius:var(--radius);padding:14px 16px;font-style:italic;font-size:.95rem}
+.ph-block.flash{animation:flash 1.2s ease 2}
+@keyframes flash{50%{box-shadow:0 0 0 6px var(--ph-bg)}}
+
+/* ---------- header ---------- */
+header.site{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:68px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--serif);font-weight:700;font-size:1.3rem}
+.brand svg{width:34px;height:34px;flex:none}
+nav.main ul{list-style:none;margin:0;padding:0;display:flex;gap:2px;align-items:center}
+nav.main a{display:block;padding:8px 11px;border-radius:6px;text-decoration:none;color:var(--ink);font-weight:600;font-size:.95rem}
+nav.main a:hover{background:var(--paper-2);color:var(--ink)}
+nav.main a[aria-current="page"]{color:var(--clay);box-shadow:inset 0 -2px 0 var(--clay);border-radius:6px 6px 0 0}
+nav.main a.cta{background:var(--clay);color:var(--on-accent);margin-left:6px}
+nav.main a.cta:hover{background:var(--ink);color:var(--paper)}
+.menu-btn{display:none;background:none;border:1px solid var(--line);border-radius:6px;padding:8px 12px;color:var(--ink);font:inherit;font-weight:600;cursor:pointer}
+@media (max-width:940px){
+  .menu-btn{display:block}
+  nav.main{position:absolute;top:68px;left:0;right:0;background:var(--paper);border-bottom:1px solid var(--line);display:none;box-shadow:0 12px 20px rgba(0,0,0,.08)}
+  nav.main.open{display:block}
+  nav.main ul{flex-direction:column;align-items:stretch;padding:10px 20px 18px}
+  nav.main a[aria-current="page"]{box-shadow:inset 3px 0 0 var(--clay);border-radius:0 6px 6px 0}
+  nav.main a.cta{margin:8px 0 0;text-align:center}
+}
+
+/* ---------- pages ---------- */
+.page{display:none}
+.page.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+section.block{padding:76px 0;position:relative}
+section.alt{background:var(--paper-2)}
+/* soft wave edges on alternating sections (water motif) */
+section.alt::before,section.alt::after{content:"";position:absolute;left:0;right:0;height:28px;background:var(--paper-2);pointer-events:none;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 28' preserveAspectRatio='none'%3E%3Cpath d='M0 28V14C120 2 240 2 360 12S600 26 720 16 960 0 1080 8 1320 26 1440 14V28Z'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 28' preserveAspectRatio='none'%3E%3Cpath d='M0 28V14C120 2 240 2 360 12S600 26 720 16 960 0 1080 8 1320 26 1440 14V28Z'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+section.alt::before{top:-27px}
+section.alt::after{bottom:-27px;transform:scaleY(-1)}
+section.alt + section.alt::before, section.alt:has(+ section.alt)::after{display:none}
+.page-head{padding:72px 0 44px;position:relative;overflow:hidden}
+.page-head .treeline{position:absolute;left:0;right:0;bottom:0;width:100%;height:70px;opacity:.28;pointer-events:none}
+.page-head .wrap{position:relative;z-index:1}
+
+/* ---------- decorative nature motifs ---------- */
+.vine{display:block;width:170px;height:30px;margin:4px 0 22px;color:var(--leaf)}
+.vine.center{margin-left:auto;margin-right:auto}
+.treeline{display:block;color:var(--moss)}
+.leaf-corner{position:absolute;width:120px;height:120px;color:var(--leaf);opacity:.5;pointer-events:none}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:700;text-decoration:none;border:2px solid var(--ink);color:var(--ink);transition:.15s;cursor:pointer;font-size:1rem;background:none;font-family:inherit}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.solid{background:var(--clay);border-color:var(--clay);color:var(--on-accent)}
+.btn.solid:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+
+/* ---------- hero ---------- */
+.hero-wrap{position:relative;overflow:hidden}
+.hero{padding:80px 20px 110px;display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center;position:relative;z-index:1}
+.hero h1 em{font-style:italic;color:var(--clay)}
+.hero-trees{position:absolute;left:0;right:0;bottom:0;width:100%;height:120px;opacity:.3;pointer-events:none}
+.hero-water{position:absolute;left:0;right:0;bottom:0;width:100%;height:26px;color:var(--water);opacity:.35}
+.venn{width:100%;max-width:440px;margin:0 auto}
+.venn text{font-family:var(--sans);font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase}
+@media (max-width:820px){.hero{grid-template-columns:1fr;padding-top:48px}.venn{max-width:320px}}
+
+/* ---------- grids & cards ---------- */
+.grid{display:grid;gap:22px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media (max-width:900px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:620px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;position:relative}
+.card h3{margin-bottom:.35em}
+.card p:last-child{margin-bottom:0}
+.tag{display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid currentColor}
+.t-hum{color:var(--clay)} .t-tech{color:var(--water)} .t-env{color:var(--moss)}
+.stripe{border-top:4px solid var(--accent)}
+.icon{width:38px;height:38px;margin-bottom:10px;color:var(--accent)}
+
+/* ---------- photos ---------- */
+figure.photo{margin:0}
+figure.photo img{width:100%;height:100%;object-fit:cover;border-radius:var(--radius);background:var(--paper-2)}
+figure.photo .frame{position:relative;border-radius:var(--radius);overflow:hidden;background:var(--paper-2)}
+figure.photo figcaption{font-size:.84rem;color:var(--ink-soft);margin-top:8px;line-height:1.45}
+figure.photo figcaption a{color:inherit}
+.ratio-wide .frame{aspect-ratio:16/10}
+.ratio-tall .frame{aspect-ratio:4/5}
+.ratio-sq .frame{aspect-ratio:1/1}
+.mosaic{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.mosaic figure .frame{aspect-ratio:3/4}
+.mosaic figure:nth-child(even){margin-top:36px}
+@media (max-width:900px){.mosaic{grid-template-columns:repeat(2,1fr)}.mosaic figure:nth-child(even){margin-top:0}}
+
+/* ---------- theme banner ---------- */
+.theme-banner{--tb-bg:#1e2621;--tb-ink:#f5f0e6;--tb-soft:#d6d0c3;--tb-accent:#f0a57f;
+  background:var(--tb-bg);color:var(--tb-ink);border-radius:14px;padding:44px;display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:center;position:relative;overflow:hidden}
+.theme-banner h2{color:var(--tb-ink)}
+.theme-banner .eyebrow{color:var(--tb-accent)}
+.theme-banner p{color:var(--tb-soft)}
+.theme-banner .btn{border-color:var(--tb-ink);color:var(--tb-ink)}
+.theme-banner .btn:hover{background:var(--tb-ink);color:var(--tb-bg)}
+.theme-banner .art{width:100%;max-width:300px;justify-self:center;position:relative;z-index:1}
+.theme-banner .topo{position:absolute;right:-60px;top:-40px;width:520px;height:420px;opacity:.13;color:#9cc4a2;pointer-events:none}
+.theme-banner > div{position:relative;z-index:1}
+:root[data-theme="dark"] .theme-banner{--tb-bg:#0b100d;border:1px solid var(--line)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .theme-banner{--tb-bg:#0b100d;border:1px solid var(--line)}}
+@media (max-width:820px){.theme-banner{grid-template-columns:1fr;padding:30px 24px}}
+
+/* ---------- stats ---------- */
+.stat{padding:22px;border-left:4px solid var(--water);background:var(--card);border-radius:0 var(--radius) var(--radius) 0}
+.stat .num{font-family:var(--serif);font-size:2.2rem;font-weight:700;line-height:1.05;color:var(--ink);display:block;margin-bottom:8px}
+.stat p{font-size:.98rem;margin:0;color:var(--ink-soft)}
+.stat .src{display:inline-block;margin-top:10px;font-size:.84rem}
+
+/* ---------- timeline ---------- */
+.timeline{list-style:none;margin:0;padding:0;border-left:2px solid var(--line)}
+.timeline li{position:relative;padding:0 0 28px 28px}
+.timeline li::before{content:"";position:absolute;left:-8px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:3px solid var(--moss)}
+.timeline li.now::before{background:var(--clay);border-color:var(--clay)}
+.timeline strong{font-family:var(--serif);font-size:1.1rem}
+
+/* ---------- about ---------- */
+.subnav{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.subnav a{padding:7px 14px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--ink);font-weight:600;font-size:.92rem;background:var(--card)}
+.subnav a:hover{border-color:var(--clay);color:var(--clay)}
+.mission{font-family:var(--serif);font-size:clamp(1.3rem,2.6vw,1.75rem);line-height:1.45;border-left:4px solid var(--moss);padding-left:24px;margin:0}
+.story-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:start}
+@media (max-width:820px){.story-grid{grid-template-columns:1fr}}
+
+/* ---------- editors ---------- */
+.avatar{aspect-ratio:1/1;border-radius:var(--radius);background:var(--card);border:1px dashed var(--line);display:grid;place-items:center;color:var(--ink-soft);font-size:.85rem;margin-bottom:14px;text-align:center;padding:10px;position:relative;overflow:hidden}
+.avatar svg{position:absolute;inset:auto 0 0 0;width:100%;height:45%;color:var(--leaf);opacity:.35}
+.avatar span{position:relative}
+.editor .role{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--moss)}
+.editor h3{font-size:1.15rem;margin:.25em 0}
+.editor p{font-size:.93rem;color:var(--ink-soft)}
+
+/* ---------- lists ---------- */
+.checks{list-style:none;padding:0;margin:0 0 1em}
+.checks li{padding-left:30px;position:relative;margin-bottom:10px}
+.checks li::before{content:"";position:absolute;left:4px;top:.45em;width:13px;height:13px;border-radius:0 100% 0 100%;background:var(--moss)}
+.prompt-list{counter-reset:p;list-style:none;padding:0;margin:0}
+.prompt-list li{counter-increment:p;padding:18px 0 18px 58px;border-bottom:1px solid var(--line);position:relative;font-family:var(--serif);font-size:1.15rem}
+.prompt-list li::before{content:counter(p,decimal-leading-zero);position:absolute;left:0;top:18px;font-family:var(--sans);font-weight:700;color:var(--clay);font-size:.95rem;letter-spacing:.05em}
+
+/* ---------- journal preview ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px}
+.filters button{font:inherit;font-weight:600;font-size:.92rem;padding:7px 16px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.filters button:hover{border-color:var(--ink)}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.piece{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;cursor:pointer;text-align:left;font:inherit;color:inherit;padding:0;transition:transform .15s, box-shadow .15s;width:100%}
+.piece:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.1)}
+.piece .art{height:150px;display:block;width:100%}
+.piece .body{padding:18px 20px 22px;display:block}
+.piece h3{font-size:1.2rem;margin:.5em 0 .3em}
+.piece .by{font-size:.9rem;color:var(--ink-soft);display:block}
+.piece .ex{font-size:.95rem;margin:.6em 0 0;color:var(--ink-soft);display:block}
+.piece .read{display:block;margin-top:12px;font-weight:700;font-size:.9rem;color:var(--water)}
+.notice{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--water);border-radius:var(--radius);padding:14px 18px;margin-bottom:28px;font-size:.95rem}
+.empty{grid-column:1/-1;color:var(--ink-soft)}
+
+/* reader modal */
+dialog.reader{border:none;border-radius:14px;padding:0;max-width:720px;width:calc(100% - 32px);background:var(--card);color:var(--ink);box-shadow:0 30px 60px rgba(0,0,0,.3)}
+dialog.reader::backdrop{background:rgba(15,20,17,.65)}
+.reader-inner{padding:44px 44px 36px;max-height:80vh;overflow:auto}
+.reader-inner .body-text{font-family:var(--serif);font-size:1.12rem;line-height:1.75}
+.reader-close{position:absolute;top:10px;right:12px;background:var(--card);border:1px solid var(--line);border-radius:50%;width:38px;height:38px;font-size:1.4rem;color:var(--ink);cursor:pointer;line-height:1}
+.reader-close:hover{border-color:var(--ink)}
+@media (max-width:620px){.reader-inner{padding:40px 22px 28px}}
+
+/* ---------- misc ---------- */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+@media (max-width:820px){.two-col{grid-template-columns:1fr;gap:32px}}
+blockquote.pull{font-family:var(--serif);font-style:italic;font-size:1.4rem;line-height:1.4;margin:0;padding:0 0 0 22px;border-left:3px solid var(--moss)}
+details{border-bottom:1px solid var(--line);padding:14px 0}
+summary{cursor:pointer;font-weight:700;font-family:var(--serif);font-size:1.12rem}
+details p{margin-top:.7em}
+.credits-list{display:grid;gap:18px}
+.credit{display:grid;grid-template-columns:140px 1fr;gap:18px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
+.credit img{width:140px;height:95px;object-fit:cover;border-radius:6px;background:var(--paper-2)}
+.credit h3{font-size:1.05rem;margin:0 0 4px}
+.credit p{margin:0;font-size:.9rem;color:var(--ink-soft)}
+@media (max-width:560px){.credit{grid-template-columns:1fr}.credit img{width:100%;height:160px}}
+
+/* ---------- footer ---------- */
+footer.site{position:relative;padding:40px 0 36px;background:var(--paper-2);font-size:.95rem;border-top:1px solid var(--line)}
+footer .treeline{position:absolute;left:0;right:0;top:-60px;width:100%;height:60px;opacity:.3;pointer-events:none}
+footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px}
+footer h4{font-family:var(--sans);font-size:.8rem;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-soft);margin-bottom:.8em}
+footer ul{list-style:none;padding:0;margin:0}
+footer li{margin-bottom:6px}
+footer a{color:var(--ink);text-decoration:none}
+footer a:hover{color:var(--clay);text-decoration:underline}
+.theme-toggle{font:inherit;font-size:.88rem;background:var(--card);border:1px solid var(--line);color:var(--ink);padding:6px 12px;border-radius:999px;cursor:pointer}
+.theme-toggle:hover{border-color:var(--ink)}
+@media (max-width:720px){footer .cols{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Reusable nature drawings (trees, leaves, vines, waves) -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="pine" viewBox="0 0 24 40"><path fill="currentColor" d="M12 0 20 12h-4l6 10h-5l7 10H13v8h-2v-8H0l7-10H2l6-10H4z"/></symbol>
+    <symbol id="oak" viewBox="0 0 40 40"><g fill="currentColor"><circle cx="20" cy="13" r="12"/><circle cx="10" cy="19" r="8"/><circle cx="30" cy="19" r="8"/><rect x="18.5" y="22" width="3" height="18"/></g></symbol>
+    <symbol id="birch" viewBox="0 0 20 40"><g fill="currentColor"><ellipse cx="10" cy="13" rx="8" ry="13"/><rect x="9" y="20" width="2" height="20"/></g></symbol>
+    <symbol id="leaf" viewBox="0 0 20 12"><path fill="currentColor" d="M0 6C4-1 14-1 20 6 14 13 4 13 0 6z"/></symbol>
+    <symbol id="vine" viewBox="0 0 170 30">
+      <path d="M4 16C24 4 40 28 62 16S100 4 120 16s30 10 46 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <g fill="currentColor">
+        <use href="#leaf" x="18" y="2" width="14" height="9" transform="rotate(-25 25 6)"/>
+        <use href="#leaf" x="40" y="18" width="14" height="9" transform="rotate(25 47 22)"/>
+        <use href="#leaf" x="74" y="3" width="14" height="9" transform="rotate(-20 81 7)"/>
+        <use href="#leaf" x="98" y="17" width="14" height="9" transform="rotate(20 105 21)"/>
+        <use href="#leaf" x="130" y="3" width="14" height="9" transform="rotate(-25 137 7)"/>
+        <circle cx="166" cy="16" r="2.4"/>
+      </g>
+    </symbol>
+    <symbol id="sprig" viewBox="0 0 120 120">
+      <path d="M8 112C30 80 50 52 112 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <g fill="currentColor">
+        <use href="#leaf" x="18" y="74" width="26" height="15" transform="rotate(-70 31 81)"/>
+        <use href="#leaf" x="34" y="78" width="26" height="15" transform="rotate(5 47 85)"/>
+        <use href="#leaf" x="40" y="44" width="26" height="15" transform="rotate(-75 53 51)"/>
+        <use href="#leaf" x="58" y="50" width="26" height="15" transform="rotate(0 71 57)"/>
+        <use href="#leaf" x="66" y="18" width="26" height="15" transform="rotate(-80 79 25)"/>
+        <use href="#leaf" x="84" y="26" width="26" height="15" transform="rotate(-10 97 33)"/>
+      </g>
+    </symbol>
+    <symbol id="i-pen" viewBox="0 0 40 40"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 32c6-2 10-8 14-16l6-8 4 4-8 6C16 22 10 26 8 32z"/><path d="M8 32l6-6"/></g></symbol>
+    <symbol id="i-lens" viewBox="0 0 40 40"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="5" y="11" width="30" height="21" rx="3"/><circle cx="20" cy="21.5" r="6.5"/><path d="M13 11l3-4h8l3 4"/></g></symbol>
+    <symbol id="i-book" viewBox="0 0 40 40"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20 10C15 7 9 7 5 9v22c4-2 10-2 15 1 5-3 11-3 15-1V9c-4-2-10-2-15 1z"/><path d="M20 10v22"/></g></symbol>
+    <symbol id="i-fire" viewBox="0 0 40 40"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="16" r="4"/><circle cx="29" cy="16" r="4"/><circle cx="20" cy="12" r="4"/><path d="M4 32c1-6 4-9 7-9s6 3 7 9M22 32c1-6 4-9 7-9s6 3 7 9M12 32c1-8 4-12 8-12s7 4 8 12"/></g></symbol>
+  </defs>
+</svg>
+
+<!-- ======================= HEADER ======================= -->
+<header class="site">
+  <div class="wrap bar">
+    <a class="brand" href="#/home" aria-label="Crossroads Journal home">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="15" cy="15" r="10" fill="none" stroke="var(--clay)" stroke-width="2.5"/>
+        <circle cx="25" cy="15" r="10" fill="none" stroke="var(--water)" stroke-width="2.5"/>
+        <circle cx="20" cy="24" r="10" fill="none" stroke="var(--moss)" stroke-width="2.5"/>
+      </svg>
+      Crossroads
+    </a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="mainnav">Menu</button>
+    <nav class="main" id="mainnav" aria-label="Main">
+      <ul>
+        <li><a href="#/home" data-page="home">Home</a></li>
+        <li><a href="#/about" data-page="about">About Us</a></li>
+        <li><a href="#/theme" data-page="theme">This Year's Theme</a></li>
+        <li><a href="#/journal" data-page="journal">The Journal</a></li>
+        <li><a href="#/involved" data-page="involved">Get Involved</a></li>
+        <li><a href="#/about/submit" class="cta">Submit Work</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ======================= HOME ======================= -->
+<div class="page" id="page-home">
+  <div class="hero-wrap">
+    <div class="wrap hero">
+      <div>
+        <span class="eyebrow">A collaborative journal from the Great Lakes</span>
+        <h1>Where Humanity, Technology &amp; the Environment <em>meet</em>, and collide.</h1>
+        <p class="lede">Crossroads gathers essays, short stories, and multimedia work from students, faculty, and neighbors across the Great Lakes region to ask one question together: how might we reimagine our relationships with each other, with technology, and with the Earth?</p>
+        <div class="btns">
+          <a class="btn solid" href="#/theme">Explore Volume 1</a>
+          <a class="btn" href="#/about/submit">Share your work</a>
+        </div>
+      </div>
+      <svg class="venn" viewBox="0 0 400 380" role="img" aria-label="Three overlapping circles labeled Humanity, Technology, and Environment, with 'you are here' at their center">
+        <circle cx="140" cy="140" r="110" fill="var(--clay)" fill-opacity=".14" stroke="var(--clay)" stroke-width="2"/>
+        <circle cx="260" cy="140" r="110" fill="var(--water)" fill-opacity=".14" stroke="var(--water)" stroke-width="2"/>
+        <circle cx="200" cy="240" r="110" fill="var(--moss)" fill-opacity=".14" stroke="var(--moss)" stroke-width="2"/>
+        <text x="92" y="105" fill="var(--clay)" text-anchor="middle">Humanity</text>
+        <text x="308" y="105" fill="var(--water)" text-anchor="middle">Technology</text>
+        <text x="200" y="318" fill="var(--moss)" text-anchor="middle">Environment</text>
+        <circle cx="200" cy="175" r="6" fill="var(--ink)"/>
+        <text x="200" y="202" fill="var(--ink)" text-anchor="middle" style="font-size:12px">YOU ARE HERE</text>
+      </svg>
+    </div>
+    <svg class="treeline hero-trees" data-trees="34" data-seed="7" viewBox="0 0 1440 120" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg>
+    <svg class="hero-water" viewBox="0 0 1440 26" preserveAspectRatio="none" aria-hidden="true"><path d="M0 14C120 4 240 4 360 12S600 24 720 14 960 2 1080 8s240 16 360 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+  </div>
+
+  <section class="block alt">
+    <div class="wrap">
+      <span class="eyebrow">Why a crossroads?</span>
+      <h2>Three domains we usually study apart</h2>
+      <svg class="vine" aria-hidden="true"><use href="#vine"/></svg>
+      <p class="lede" style="margin-bottom:32px">Most conversations treat people, tools, and the planet as separate subjects, or at best, pairs. The most pressing questions of our time live where all three overlap.</p>
+      <div class="grid g3">
+        <div class="card stripe" style="--accent:var(--clay)">
+          <span class="tag t-hum">Humanity</span>
+          <h3 style="margin-top:.6em">Who lives here?</h3>
+          <p>How we earn a living, how we connect, who gets a say, and whose lived experience shapes the decisions made about a place.</p>
+        </div>
+        <div class="card stripe" style="--accent:var(--water)">
+          <span class="tag t-tech">Technology</span>
+          <h3 style="margin-top:.6em">What are we building?</h3>
+          <p>The tools we rely on every day, and the physical infrastructure, power, and labor hidden behind every search, stream, and chatbot.</p>
+        </div>
+        <div class="card stripe" style="--accent:var(--moss)">
+          <span class="tag t-env">Environment</span>
+          <h3 style="margin-top:.6em">What does it cost the Earth?</h3>
+          <p>The water drawn, the power consumed, the land reshaped, and what we leave behind for the ecosystems and generations that come after us.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap two-col" style="align-items:center">
+      <figure class="photo ratio-sq" data-photo="greatlakes"></figure>
+      <div>
+        <span class="eyebrow">Rooted in the Great Lakes</span>
+        <h2>A region shaped by water</h2>
+        <svg class="vine" aria-hidden="true"><use href="#vine"/></svg>
+        <p>Crossroads is based in Cleveland, on the shore of Lake Erie, and focused on the Great Lakes region. Eight U.S. states, the province of Ontario, and many Tribal Nations and First Nations share this basin, which holds about a fifth of the world's surface fresh water.</p>
+        <p>That water, and the land around it, is exactly what makes the region attractive to data center developers. It's also why the people who live here deserve a say in what gets built.</p>
+        <p class="muted small">We welcome voices from all around the lakes, from Duluth to Buffalo and from Toronto to Toledo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt">
+    <div class="wrap">
+      <span class="eyebrow">The places we're writing for</span>
+      <h2>Falls, ledges, shorelines, rivers</h2>
+      <svg class="vine" aria-hidden="true"><use href="#vine"/></svg>
+      <div class="mosaic" style="margin-top:10px">
+        <figure class="photo" data-photo="brandywine"></figure>
+        <figure class="photo" data-photo="waves"></figure>
+        <figure class="photo" data-photo="ledges"></figure>
+        <figure class="photo" data-photo="wildflowers"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="theme-banner">
+        <svg class="topo" viewBox="0 0 520 420" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M260 60c90 0 170 50 180 130s-50 170-160 175S70 320 70 220 170 60 260 60z"/>
+          <path d="M262 95c70 0 135 40 142 100s-40 135-125 138-172-40-172-120S192 95 262 95z"/>
+          <path d="M265 130c52 0 98 30 103 72s-30 98-92 100-126-28-126-88 63-84 115-84z"/>
+          <path d="M268 165c34 0 62 20 66 46s-20 62-58 63-80-18-80-54 38-55 72-55z"/>
+          <path d="M270 198c18 0 32 10 34 24s-10 32-30 32-40-8-40-28 18-28 36-28z"/>
+        </g></svg>
+        <div>
+          <span class="eyebrow">Volume 1 · 2026–2027</span>
+          <h2>The Cloud Has a Footprint</h2>
+          <p>Our first volume is rooted in advocacy around data centers: the warehouses of servers that make "the cloud" possible, and the communities, watersheds, and power grids living in their shadow. Here in the Great Lakes region, that conversation is already on our doorstep.</p>
+          <div class="btns"><a class="btn" href="#/theme">Read the theme</a></div>
+        </div>
+        <svg class="art" viewBox="0 0 300 220" aria-hidden="true">
+          <path d="M80 70c0-22 18-40 40-40 16 0 30 9 36 23 4-2 9-3 14-3 20 0 36 16 36 36H80z" fill="none" stroke="#f0a57f" stroke-width="2.5"/>
+          <g stroke="#9cc4a2" stroke-width="2" stroke-dasharray="4 5"><line x1="110" y1="90" x2="110" y2="125"/><line x1="150" y1="90" x2="150" y2="125"/><line x1="190" y1="90" x2="190" y2="125"/></g>
+          <rect x="70" y="125" width="160" height="70" fill="none" stroke="#f5f0e6" stroke-width="2.5"/>
+          <g fill="#f5f0e6" opacity=".7"><rect x="84" y="140" width="22" height="6"/><rect x="84" y="154" width="22" height="6"/><rect x="84" y="168" width="22" height="6"/><rect x="118" y="140" width="22" height="6"/><rect x="118" y="154" width="22" height="6"/><rect x="118" y="168" width="22" height="6"/><rect x="152" y="140" width="22" height="6"/><rect x="152" y="154" width="22" height="6"/><rect x="152" y="168" width="22" height="6"/><rect x="186" y="140" width="22" height="6"/><rect x="186" y="154" width="22" height="6"/><rect x="186" y="168" width="22" height="6"/></g>
+          <g fill="#9cc4a2"><use href="#pine" x="22" y="150" width="26" height="46"/><use href="#oak" x="238" y="158" width="40" height="38"/><use href="#pine" x="262" y="164" width="18" height="32"/></g>
+          <path d="M10 208c20-8 40 8 60 0s40 8 60 0 40 8 60 0 40 8 60 0 40 8 40 0" fill="none" stroke="#86c0cf" stroke-width="2.5"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt">
+    <div class="wrap two-col">
+      <div>
+        <span class="eyebrow">Built together</span>
+        <h2>This journal isn't written <em>for</em> a community. It's written <em>by</em> one.</h2>
+        <p>Crossroads is a collaborative space. It's curated by a rotating board of students and faculty, and open to contributors from Case Western Reserve University and communities across the Great Lakes. You don't need to be a professional writer or artist; we value lived experience and honest perspective as much as polish.</p>
+        <div class="btns"><a class="btn" href="#/involved">Ways to get involved</a></div>
+      </div>
+      <div class="grid g2">
+        <div class="card" style="--accent:var(--clay)"><svg class="icon" aria-hidden="true"><use href="#i-pen"/></svg><h3>Write</h3><p class="small muted">Essays and short stories grounded in what you've seen, lived, or imagined.</p></div>
+        <div class="card" style="--accent:var(--water)"><svg class="icon" aria-hidden="true"><use href="#i-lens"/></svg><h3>Create</h3><p class="small muted">Photography, illustration, audio, video, and hybrid forms.</p></div>
+        <div class="card" style="--accent:var(--moss)"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg><h3>Read &amp; edit</h3><p class="small muted">Join the board as a reader and help shape each volume.</p></div>
+        <div class="card" style="--accent:var(--clay)"><svg class="icon" aria-hidden="true"><use href="#i-fire"/></svg><h3>Gather</h3><p class="small muted">Come to readings, workshops, and conversations with neighbors.</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ======================= ABOUT ======================= -->
+<div class="page" id="page-about">
+  <div class="page-head">
+    <svg class="treeline" data-trees="30" data-seed="3" viewBox="0 0 1440 70" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg>
+    <div class="wrap narrow">
+      <span class="eyebrow">About Us</span>
+      <h1>Our Story</h1>
+      <p class="lede">Crossroads Journal began as a capstone project to explore the places where Humanity, Technology, and the Environment meet, and, more specifically, where they collide.</p>
+      <nav class="subnav" aria-label="About sections">
+        <a href="#/about/story">Our Story</a>
+        <a href="#/about/mission">Mission Statement</a>
+        <a href="#/about/editors">Our Editors</a>
+        <a href="#/about/submit">How to Submit</a>
+        <a href="#/about/terms">Terms of Publication</a>
+      </nav>
+    </div>
+  </div>
+
+  <section class="block alt" id="about-story">
+    <div class="wrap story-grid">
+      <div>
+        <p class="ph-block">[Add a sentence or two here on the moment, class, or experience that first sparked the idea.]</p>
+        <p>We chose to launch with a focus on data centers because few subjects make that intersection, and that collision, more visible. From the water they draw to the power they consume to the land they reshape, data centers influence and change the communities living in their shadow. Decisions about how we build and operate data centers are rarely made in public view, and even more rarely shaped by the local people most affected by them.</p>
+        <p>Crossroads Journal exists to open that conversation to more voices through essays, short stories, and multimedia work from contributors both inside and beyond Case Western Reserve University, with a focus on the Great Lakes region. Our journal is guided by a rotating editorial board of students and faculty who select work consistent with the journal's mission.</p>
+        <p>While we're launching with data centers as our starting point, our ambition is broader. We aim to grow over time into a home for creative work across the full intersection of Humanity, Technology, and the Environment.</p>
+        <p class="small muted">Crossroads is a project of the Humanity and Technology (HAT) Capstone at Case Western Reserve University, Cleveland, Ohio.</p>
+      </div>
+      <figure class="photo ratio-tall" data-photo="sunset"></figure>
+    </div>
+  </section>
+
+  <section class="block" id="about-mission">
+    <svg class="leaf-corner" style="right:4%;top:40px" aria-hidden="true"><use href="#sprig"/></svg>
+    <div class="wrap narrow">
+      <span class="eyebrow">Mission Statement</span>
+      <p class="mission">At Crossroads Journal we aim to elevate diverse perspectives on problems that arise at the intersection of humanity, technology, and the environment. Through creative works that range from essays to short stories and multimedia pieces, we encourage our contributors and readers to reimagine ways in which we can make change at this intersection: change that benefits all communities equitably.</p>
+      <h3 style="margin-top:48px">What we believe</h3>
+      <div class="grid g2" style="margin-top:16px">
+        <div class="card"><h3>Lived experience is expertise</h3><p class="small muted">The people closest to a problem often understand it best, and are least often asked.</p></div>
+        <div class="card"><h3>Creativity is a tool for change</h3><p class="small muted">A story or photograph can move people in ways a policy brief can't.</p></div>
+        <div class="card"><h3>Decisions should be made in the open</h3><p class="small muted">We push back on choices shaped behind closed doors, by institutional bias, or by colonial ways of thinking about land and resources.</p></div>
+        <div class="card"><h3>Many voices, not one answer</h3><p class="small muted">We publish disagreement. A crossroads is a place where different paths meet.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt" id="about-editors">
+    <div class="wrap">
+      <span class="eyebrow">Our Editors</span>
+      <h2>The Editorial Board</h2>
+      <svg class="vine" aria-hidden="true"><use href="#vine"/></svg>
+      <p class="lede" style="margin-bottom:36px">A rotating board of students and faculty reads every submission and shapes each volume. <span class="ph">[Add photos, names, and bios as the board is confirmed.]</span></p>
+      <div class="grid g4" id="editors"></div>
+      <p class="small muted" style="margin-top:28px">Faculty advisors &amp; collaborators: <span class="ph">[List confirmed advisors here]</span></p>
+    </div>
+  </section>
+
+  <section class="block" id="about-submit">
+    <div class="wrap narrow">
+      <span class="eyebrow">How to Submit</span>
+      <h2>Share your work with us</h2>
+      <svg class="vine" aria-hidden="true"><use href="#vine"/></svg>
+      <p>We welcome essays, short stories, and multimedia pieces that explore the intersection of Humanity, Technology, and the Environment. For our initial launch, we're especially interested in work that engages with data centers in the Great Lakes region (their construction, their consequences, and the communities and ecosystems shaped by them), though we welcome any piece that speaks meaningfully to our broader mission.</p>
+
+      <h3 style="margin-top:32px">Who can submit</h3>
+      <p>Crossroads Journal is open to contributors from Case Western Reserve University and from communities across the Great Lakes region. You don't need to be a student, faculty member, or professional writer. We're looking for lived experience and genuine perspective as much as great writing and art.</p>
+
+      <h3 style="margin-top:32px">What we're looking for</h3>
+      <div class="grid g3" style="margin:14px 0 18px">
+        <div class="card"><h3>Essays</h3><p class="small muted">Personal, reported, or reflective nonfiction.</p><p class="small"><span class="ph">[word count]</span></p></div>
+        <div class="card"><h3>Short stories</h3><p class="small muted">Fiction, speculative futures, and imagined pasts.</p><p class="small"><span class="ph">[word count]</span></p></div>
+        <div class="card"><h3>Multimedia</h3><p class="small muted">Photography, illustration, audio, video, or hybrid.</p><p class="small"><span class="ph">[file types]</span></p></div>
+      </div>
+      <p class="ph-block">[Add any format specifics once decided: word count ranges, file types accepted, whether simultaneous submissions are allowed, etc.]</p>
+
+      <h3 style="margin-top:32px">How review works</h3>
+      <p>Submissions are read by our student-faculty editorial board and selected in keeping with the journal's mission. <span class="ph">[Add an expected response time once decided.]</span></p>
+
+      <h3 style="margin-top:32px">How to submit</h3>
+      <p>Submissions are collected through an online form.</p>
+      <div class="btns" style="margin-top:8px">
+        <!-- ✏️ Replace href="#" with your Google Form (or other) link -->
+        <a class="btn solid" href="#" id="submit-link">Open the submission form</a>
+      </div>
+      <p class="ph-block" id="submit-note" style="margin-top:14px">[Add the submission form link. Until then, this button stays inactive.]</p>
+      <p>Questions? Reach out to us at <span class="ph">[contact email]</span>.</p>
+    </div>
+  </section>
+
+  <section class="block alt" id="about-terms">
+    <div class="wrap narrow">
+      <span class="eyebrow">Terms of Publication</span>
+      <h2>Your work stays yours</h2>
+      <p>By accepting publication, the author grants Crossroads Journal first publication rights, on a non-exclusive basis, to the work for our website, print and anthology editions, and promotional materials, including the right to keep the piece archived on our site indefinitely and to include it in future anthologized editions of the journal.</p>
+      <p>The author retains copyright and is free to publish the piece elsewhere after it first appears in Crossroads Journal. If you republish it elsewhere, we'd appreciate a "first published in Crossroads Journal" credit, the same courtesy we extend when reprinting work that first appeared elsewhere.</p>
+      <p class="muted">At this time, we do not offer compensation for acceptance or publication.</p>
+    </div>
+  </section>
+  <div style="height:40px"></div>
+</div>
+
+<!-- ======================= THEME ======================= -->
+<div class="page" id="page-theme">
+  <div class="page-head">
+    <svg class="treeline" data-trees="30" data-seed="11" viewBox="0 0 1440 70" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg>
+    <div class="wrap narrow">
+      <span class="eyebrow">This Year's Theme · Volume 1 · 2026–2027</span>
+      <h1>The Cloud Has a Footprint</h1>
+      <p class="lede">"The cloud" sounds weightless. It isn't. It's concrete, cooling water, transmission lines, and diesel generators, built on land someone calls home. Our first volume is rooted in advocacy around data centers in the Great Lakes region, and in the people and places that live alongside them.</p>
+    </div>
+  </div>
+
+  <section class="block alt">
+    <div class="wrap two-col">
+      <div>
+        <span class="eyebrow">Why data centers</span>
+        <h2>The intersection, made visible</h2>
+        <p>Few things show the collision of Humanity, Technology, and the Environment as clearly as the data center. Every search, stream, and AI prompt runs through one. Their growth raises questions about how we live, what we consume, what we leave behind, and how we connect with the world around us.</p>
+        <p>They also raise questions of power: who decides where they go, who benefits, and who bears the cost. Too often, these decisions are made through non-disclosure agreements and closed-door negotiations, rarely shaped by the local people most affected.</p>
+        <blockquote class="pull" style="margin-top:28px">Advocacy doesn't mean every piece must agree. It means insisting that the people living with these decisions get to be heard.</blockquote>
+        <p class="small muted" style="margin-top:14px">We welcome work from every angle: residents, workers, engineers, skeptics, and enthusiasts.</p>
+      </div>
+      <figure class="photo ratio-tall" data-photo="servers"></figure>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <span class="eyebrow">By the numbers</span>
+      <h2>The scale of the build-out</h2>
+      <div class="grid g4" style="margin-top:28px">
+        <div class="stat"><span class="num">~2×</span><p>Global data center electricity use is projected to roughly double by 2030, to around 945 TWh.</p><a class="src" href="https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai" target="_blank" rel="noopener">IEA, Energy and AI ↗</a></div>
+        <div class="stat" style="border-color:var(--clay)"><span class="num">4.4% → 12%</span><p>Share of U.S. electricity used by data centers in 2023, and the high-end projection for 2028.</p><a class="src" href="https://newscenter.lbl.gov/2025/01/15/berkeley-lab-report-evaluates-increase-in-electricity-demand-from-data-centers/" target="_blank" rel="noopener">Berkeley Lab / DOE ↗</a></div>
+        <div class="stat" style="border-color:var(--moss)"><span class="num">220+</span><p>Data centers planned across the Great Lakes region, including 77 in Ohio, more than any other Great Lakes state.</p><a class="src" href="https://www.circleofblue.org/2026/fresh-great-lakes/great-lakes-states-face-a-data-center-governance-gap/" target="_blank" rel="noopener">Circle of Blue, 2026 ↗</a></div>
+        <div class="stat"><span class="num">5M gal</span><p>Water per day a single hyperscale facility can use. Most aren't required to publicly report use from municipal systems.</p><a class="src" href="https://signalcleveland.org/how-data-centers-could-affect-northeast-ohios-power-grid-water-use-and-air-quality/" target="_blank" rel="noopener">Signal Cleveland ↗</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt">
+    <div class="wrap two-col">
+      <div>
+        <span class="eyebrow">Close to home</span>
+        <h2>Northeast Ohio is already part of this story</h2>
+        <p>Cleveland sits on Lake Erie, part of the largest surface freshwater system on Earth. That makes the Great Lakes region attractive to data center developers, and it makes the questions of water, power, and oversight here urgent. Lake Erie's watershed is already stressed by nutrient pollution and harmful algal blooms.</p>
+        <p>In 2026, Clevelanders and Ohioans made their voices heard. A hyperscale data center permit was rejected in Slavic Village, Cleveland City Council approved a short-term moratorium on new data center projects, and after more than 7,000 public comments, Ohio EPA withdrew a proposed fast-track wastewater permit for data centers.</p>
+        <p class="small muted">Sources: <a href="https://signalcleveland.org/how-data-centers-could-affect-northeast-ohios-power-grid-water-use-and-air-quality/" target="_blank" rel="noopener">Signal Cleveland</a>, <a href="https://greatlakes.org/2026/08/ohio-water-victory-builds-momentum-for-data-center-protections/" target="_blank" rel="noopener">Alliance for the Great Lakes</a></p>
+      </div>
+      <div>
+        <ol class="timeline" aria-label="2026 local timeline">
+          <li><strong>May 2026</strong><br><span class="muted">Hyperscale data center permit rejected in Cleveland's Slavic Village.</span></li>
+          <li><strong>July 2026</strong><br><span class="muted">Cleveland City Council approves a short-term moratorium on data center projects.</span></li>
+          <li><strong>Summer 2026</strong><br><span class="muted">Ohio EPA withdraws a one-size-fits-all data center wastewater permit after 7,000+ public comments.</span></li>
+          <li class="now"><strong>Fall 2026</strong><br><span class="muted">Crossroads opens its call for work. Your perspective belongs in the record.</span></li>
+        </ol>
+      </div>
+    </div>
+    <div class="wrap grid g2" style="margin-top:36px">
+      <figure class="photo ratio-wide" data-photo="cuyahoga"></figure>
+      <figure class="photo ratio-wide" data-photo="bloom"></figure>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap narrow">
+      <span class="eyebrow">Prompts to get you started</span>
+      <h2>Questions we're sitting with</h2>
+      <svg class="vine" aria-hidden="true"><use href="#vine"/></svg>
+      <p class="muted">Not requirements, just doors in. Answer one, argue with one, or ignore them all.</p>
+      <ol class="prompt-list">
+        <li>What does the cloud look like from your street, your kitchen tap, or your electric bill?</li>
+        <li>Who was in the room when the decision was made, and who wasn't?</li>
+        <li>What would a data center designed <em>with</em> its neighbors look like?</li>
+        <li>Write a letter to Lake Erie, a server, or your future self in 2050.</li>
+        <li>What do we owe the land that holds our memories, both digital and human?</li>
+        <li>Imagine the data center's afterlife: what happens to the building, and the place, when it's gone?</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block alt">
+    <div class="wrap">
+      <span class="eyebrow">Volume 1 roadmap</span>
+      <h2>From call to publication</h2>
+      <div class="grid g4" style="margin-top:24px">
+        <div class="card"><span class="tag t-hum">Fall 2026</span><h3 style="margin-top:.6em">Gather</h3><p class="small muted">Form the research group and editorial board; launch the website; open the call for submissions.</p></div>
+        <div class="card"><span class="tag t-tech">Winter</span><h3 style="margin-top:.6em">Read</h3><p class="small muted">Board reviews submissions; community reading sessions. <span class="ph">[deadline TBD]</span></p></div>
+        <div class="card"><span class="tag t-env">Early Spring</span><h3 style="margin-top:.6em">Shape</h3><p class="small muted">Editing with contributors, design, and sequencing of the volume.</p></div>
+        <div class="card"><span class="tag t-hum">Spring 2027</span><h3 style="margin-top:.6em">Publish</h3><p class="small muted">Volume 1 launches online and in print, with a public launch reading. <span class="ph">[date TBD]</span></p></div>
+      </div>
+      <div class="btns"><a class="btn solid" href="#/about/submit">Submit to Volume 1</a></div>
+    </div>
+  </section>
+  <div style="height:40px"></div>
+</div>
+
+<!-- ======================= JOURNAL ======================= -->
+<div class="page" id="page-journal">
+  <div class="page-head">
+    <svg class="treeline" data-trees="30" data-seed="19" viewBox="0 0 1440 70" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg>
+    <div class="wrap">
+      <span class="eyebrow">The Journal</span>
+      <h1>Volume 1: The Cloud Has a Footprint</h1>
+      <p class="lede">Published work will live here, free and publicly accessible, alongside a printed edition.</p>
+    </div>
+  </div>
+  <section class="block alt">
+    <div class="wrap">
+      <div class="notice" role="note"><strong>Preview:</strong> Volume 1 is still being gathered. The pieces below are placeholders that show how the journal will look once published. Titles, contributors, and excerpts are illustrative only.</div>
+      <div class="filters" role="group" aria-label="Filter by form">
+        <button type="button" aria-pressed="true" data-filter="all">All work</button>
+        <button type="button" aria-pressed="false" data-filter="essay">Essays</button>
+        <button type="button" aria-pressed="false" data-filter="story">Short stories</button>
+        <button type="button" aria-pressed="false" data-filter="media">Multimedia</button>
+      </div>
+      <div class="grid g3" id="pieces" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap two-col">
+      <div>
+        <span class="eyebrow">In print</span>
+        <h2>A journal you can hold</h2>
+        <p>Each volume will also be printed as a physical edition, shared with contributors, libraries, and community spaces around the Great Lakes, so the work reaches people offline, too.</p>
+        <p class="small"><span class="ph">[Add print availability, pickup locations, or ordering info once decided.]</span></p>
+      </div>
+      <div>
+        <span class="eyebrow">Archive</span>
+        <h2>Future volumes</h2>
+        <p class="muted">Future volumes will broaden beyond data centers to the full intersection of Humanity, Technology, and the Environment. They'll be archived here.</p>
+        <div class="card"><strong>Volume 2 · 2027–2028</strong><br><span class="small muted">Theme to be chosen with the community.</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ======================= GET INVOLVED ======================= -->
+<div class="page" id="page-involved">
+  <div class="page-head">
+    <svg class="treeline" data-trees="30" data-seed="23" viewBox="0 0 1440 70" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg>
+    <div class="wrap narrow">
+      <span class="eyebrow">Get Involved</span>
+      <h1>Pull up a chair</h1>
+      <p class="lede">Crossroads is a collaborative environment. It only works if many people shape it: students, faculty, residents, artists, organizers, and anyone around the Great Lakes with something to say about the world we're building.</p>
+    </div>
+  </div>
+
+  <section class="block alt">
+    <div class="wrap">
+      <div class="grid g3">
+        <div class="card stripe" style="--accent:var(--clay)">
+          <h3>Contribute</h3>
+          <p class="muted">Submit an essay, short story, or multimedia piece. First-time writers and artists are especially welcome.</p>
+          <a href="#/about/submit">How to submit →</a>
+        </div>
+        <div class="card stripe" style="--accent:var(--water)">
+          <h3>Join the research group</h3>
+          <p class="muted">Crossroads is supported by a CWRU research group exploring this intersection and what a journal can do from an advocacy perspective.</p>
+          <span class="ph">[Meeting times / contact]</span>
+        </div>
+        <div class="card stripe" style="--accent:var(--moss)">
+          <h3>Become a reader</h3>
+          <p class="muted">Help read submissions and shape the volume. Reader seats are open to students and community members.</p>
+          <span class="ph">[Interest form link]</span>
+        </div>
+        <div class="card stripe" style="--accent:var(--moss)">
+          <h3>Partner with us</h3>
+          <p class="muted">Neighborhood organizations, libraries, and watershed and environmental groups: help us reach voices we'd otherwise miss.</p>
+          <span class="ph">[Partner contact]</span>
+        </div>
+        <div class="card stripe" style="--accent:var(--clay)">
+          <h3>Come to an event</h3>
+          <p class="muted">Open writing workshops, community listening sessions, and a launch reading for Volume 1.</p>
+          <span class="ph">[Upcoming events]</span>
+        </div>
+        <div class="card stripe" style="--accent:var(--water)">
+          <h3>Spread the word</h3>
+          <p class="muted">Share the call for work with someone whose story should be heard: a neighbor, a coworker, a classmate.</p>
+          <span class="ph">[Social links / newsletter]</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <svg class="leaf-corner" style="left:3%;top:50px;transform:scaleX(-1)" aria-hidden="true"><use href="#sprig"/></svg>
+    <div class="wrap narrow">
+      <span class="eyebrow">Our commitments</span>
+      <h2>A safe space to share</h2>
+      <p>We're compiling and distributing other people's creative work, and we take that responsibility seriously.</p>
+      <ul class="checks">
+        <li>We never alter the meaning of your work, and every edit is made with you.</li>
+        <li>Your work is credited to you, and you keep your copyright.</li>
+        <li>We don't use contributors' work for anyone's personal gain.</li>
+        <li>Editorial decisions are made as a group, guided by our mission.</li>
+        <li>We actively seek out perspectives that usually go unheard.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block alt">
+    <div class="wrap narrow">
+      <span class="eyebrow">FAQ</span>
+      <h2>Common questions</h2>
+      <details><summary>Do I have to be a CWRU student to contribute?</summary><p>No. Crossroads is open to contributors from Case Western Reserve University and from communities across the Great Lakes region.</p></details>
+      <details><summary>I don't live in the Great Lakes region. Can I still submit?</summary><p>For now, Crossroads is focused on the Great Lakes region, so we prioritize work from people who live, work, or have roots here. <span class="ph">[Decide whether to accept outside submissions.]</span></p></details>
+      <details><summary>Do I need to be an expert on data centers?</summary><p>Not at all. Lived experience, curiosity, and imagination count. Some of the most important perspectives come from people who've never been asked.</p></details>
+      <details><summary>Does my piece have to be about data centers?</summary><p>Volume 1 is especially interested in data centers, but we welcome any work that speaks meaningfully to the intersection of Humanity, Technology, and the Environment.</p></details>
+      <details><summary>Do I get paid?</summary><p>Not at this time. You retain copyright, and your work will be published online and in print.</p></details>
+      <details><summary>Can I submit something I've published elsewhere?</summary><p class="ph-block">[Decide on reprint / simultaneous submission policy.]</p></details>
+    </div>
+  </section>
+  <div style="height:40px"></div>
+</div>
+
+<!-- ======================= PHOTO CREDITS ======================= -->
+<div class="page" id="page-credits">
+  <div class="page-head">
+    <div class="wrap narrow">
+      <span class="eyebrow">Photo Credits</span>
+      <h1>Images &amp; sources</h1>
+      <p class="lede">Photographs on this site come from Wikimedia Commons and are used under their public domain or Creative Commons licenses. Thank you to the photographers and agencies who share their work.</p>
+    </div>
+  </div>
+  <section class="block alt">
+    <div class="wrap narrow"><div class="credits-list" id="credits"></div></div>
+  </section>
+  <div style="height:40px"></div>
+</div>
+
+</main>
+
+<!-- ======================= FOOTER ======================= -->
+<footer class="site">
+  <svg class="treeline" data-trees="40" data-seed="5" viewBox="0 0 1440 60" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a class="brand" href="#/home" style="margin-bottom:10px">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="15" cy="15" r="10" fill="none" stroke="var(--clay)" stroke-width="2.5"/><circle cx="25" cy="15" r="10" fill="none" stroke="var(--water)" stroke-width="2.5"/><circle cx="20" cy="24" r="10" fill="none" stroke="var(--moss)" stroke-width="2.5"/></svg>
+          Crossroads Journal
+        </a>
+        <p class="muted small">A collaborative journal from the Great Lakes region, reimagining the intersection of Humanity, Technology, and the Environment. Case Western Reserve University · Cleveland, Ohio.</p>
+        <p class="small ph-block" style="margin-top:12px">[Land acknowledgment: consider writing this with Indigenous community partners in the Great Lakes region.]</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#/about">About Us</a></li>
+          <li><a href="#/about/mission">Mission</a></li>
+          <li><a href="#/about/editors">Editors</a></li>
+          <li><a href="#/theme">This Year's Theme</a></li>
+          <li><a href="#/journal">The Journal</a></li>
+          <li><a href="#/credits">Photo Credits</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#/about/submit">Submit work</a></li>
+          <li><a href="#/involved">Get involved</a></li>
+          <li><span class="ph">[contact email]</span></li>
+          <li><span class="ph">[Instagram]</span></li>
+        </ul>
+        <button type="button" class="theme-toggle" id="themeToggle" style="margin-top:14px">Switch to dark mode</button>
+      </div>
+    </div>
+    <p class="small muted" style="margin-top:32px">© <span id="yr"></span> Crossroads Journal. Contributors retain copyright to their work. Photos: see <a href="#/credits" style="text-decoration:underline">Photo Credits</a>.</p>
+  </div>
+</footer>
+
+<!-- reader modal for journal preview -->
+<dialog class="reader" id="reader" aria-labelledby="reader-title">
+  <button type="button" class="reader-close" aria-label="Close">×</button>
+  <div class="reader-inner" id="reader-body"></div>
+</dialog>
+
+<script>
+/* ============================================================
+   PHOTOS: all from Wikimedia Commons. To swap a photo, edit
+   this list; captions and the Photo Credits page update itself.
+   ============================================================ */
+const WM = "https://thumb.wikimedia.org/wikipedia/commons/thumb/";
+const PHOTOS = {
+  greatlakes: { src: WM+"8/8e/Great_Lakes_%28MODIS_2020-07-04%29.jpg/1280px-Great_Lakes_%28MODIS_2020-07-04%29.jpg",
+    alt: "Satellite view of all five Great Lakes on a clear summer day",
+    title: "The Great Lakes from space, July 2020", author: "MODIS Land Rapid Response Team, NASA GSFC",
+    license: "Public domain", licenseUrl: "", page: "https://commons.wikimedia.org/wiki/File:Great_Lakes_(MODIS_2020-07-04).jpg" },
+  brandywine: { src: WM+"a/a1/Brandywine_Falls_%2837927279572%29.jpg/1280px-Brandywine_Falls_%2837927279572%29.jpg",
+    alt: "Brandywine Falls cascading through autumn woods",
+    title: "Brandywine Falls, Cuyahoga Valley National Park, Ohio", author: "Erik Drost",
+    license: "CC BY 2.0", licenseUrl: "https://creativecommons.org/licenses/by/2.0/", page: "https://commons.wikimedia.org/wiki/File:Brandywine_Falls_(37927279572).jpg" },
+  waves: { src: WM+"c/ca/Lake_Erie_waves_near_Point_Pelee_National_Park.jpg/1280px-Lake_Erie_waves_near_Point_Pelee_National_Park.jpg",
+    alt: "Waves breaking on Lake Erie under a blue sky",
+    title: "Lake Erie waves near Point Pelee National Park, Ontario", author: "Jason Zhang",
+    license: "CC BY-SA 3.0", licenseUrl: "https://creativecommons.org/licenses/by-sa/3.0/", page: "https://commons.wikimedia.org/wiki/File:Lake_Erie_waves_near_Point_Pelee_National_Park.jpg" },
+  ledges: { src: WM+"9/9d/Illuminating_the_Ledges_%28Cuyahoga_Valley_National_Park%29.jpg/1280px-Illuminating_the_Ledges_%28Cuyahoga_Valley_National_Park%29.jpg",
+    alt: "Sunlight filtering through trees onto mossy sandstone ledges",
+    title: "Illuminating the Ledges, Cuyahoga Valley National Park, Ohio", author: "Andrew Parlette",
+    license: "CC BY 2.0", licenseUrl: "https://creativecommons.org/licenses/by/2.0/", page: "https://commons.wikimedia.org/wiki/File:Illuminating_the_Ledges_(Cuyahoga_Valley_National_Park).jpg" },
+  wildflowers: { src: WM+"9/90/20240906_FS_JS_Northern_Great_Lakes_Visitor_Center_Trail_03_%2854102325182%29.jpg/1280px-20240906_FS_JS_Northern_Great_Lakes_Visitor_Center_Trail_03_%2854102325182%29.jpg",
+    alt: "Purple asters blooming beside a trail",
+    title: "Asters on the Northern Great Lakes Visitor Center trail, Wisconsin", author: "USDA Forest Service, Eastern Region",
+    license: "Public domain", licenseUrl: "", page: "https://commons.wikimedia.org/wiki/File:20240906_FS_JS_Northern_Great_Lakes_Visitor_Center_Trail_03_(54102325182).jpg" },
+  sunset: { src: WM+"7/7b/Settler%27s_Landing_Park_and_Cuyahoga_River_at_sunset_-_Cleveland%2C_Ohio_-_2019-6_3.jpg/1280px-Settler%27s_Landing_Park_and_Cuyahoga_River_at_sunset_-_Cleveland%2C_Ohio_-_2019-6_3.jpg",
+    alt: "The sun setting under a bridge over the Cuyahoga River in Cleveland",
+    title: "Cuyahoga River at sunset from Settler's Landing Park, Cleveland", author: "Erik Drost",
+    license: "CC BY 2.0", licenseUrl: "https://creativecommons.org/licenses/by/2.0/", page: "https://commons.wikimedia.org/wiki/File:Settler%27s_Landing_Park_and_Cuyahoga_River_at_sunset_-_Cleveland,_Ohio_-_2019-6_3.jpg" },
+  servers: { src: WM+"b/b3/Datacenter_Server_Racks_%2822370909788%29.jpg/1280px-Datacenter_Server_Racks_%2822370909788%29.jpg",
+    alt: "Rows of server racks inside a data center",
+    title: "Data center server racks", author: "Carl Lender",
+    license: "CC BY 2.0", licenseUrl: "https://creativecommons.org/licenses/by/2.0/", page: "https://commons.wikimedia.org/wiki/File:Datacenter_Server_Racks_(22370909788).jpg" },
+  cuyahoga: { src: WM+"8/8b/The_Cuyahoga_River_and_Cleveland_OH.jpg/1280px-The_Cuyahoga_River_and_Cleveland_OH.jpg",
+    alt: "A freighter on the Cuyahoga River with the Cleveland skyline behind it",
+    title: "The Cuyahoga River and downtown Cleveland", author: "Roy Luck",
+    license: "CC BY 2.0", licenseUrl: "https://creativecommons.org/licenses/by/2.0/", page: "https://commons.wikimedia.org/wiki/File:The_Cuyahoga_River_and_Cleveland_OH.jpg" },
+  bloom: { src: WM+"c/c1/Phytoplankton_bloom_in_Lake_Erie_%28MODIS_2016-06-18%29.jpg/1280px-Phytoplankton_bloom_in_Lake_Erie_%28MODIS_2016-06-18%29.jpg",
+    alt: "Satellite image of green algae swirling in western Lake Erie",
+    title: "Algal bloom in Lake Erie seen from space, June 2016", author: "Jeff Schmaltz, MODIS Land Rapid Response Team, NASA GSFC",
+    license: "Public domain", licenseUrl: "", page: "https://commons.wikimedia.org/wiki/File:Phytoplankton_bloom_in_Lake_Erie_(MODIS_2016-06-18).jpg" }
+};
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const licHTML = p => p.licenseUrl ? `<a href="${p.licenseUrl}" target="_blank" rel="noopener">${p.license}</a>` : p.license;
+document.querySelectorAll('figure.photo[data-photo]').forEach(fig => {
+  const p = PHOTOS[fig.dataset.photo]; if (!p) return;
+  fig.innerHTML = `<div class="frame"><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy" decoding="async"></div>
+    <figcaption>${esc(p.title)} · Photo: <a href="${p.page}" target="_blank" rel="noopener">${esc(p.author)}</a>, ${licHTML(p)}</figcaption>`;
+});
+document.getElementById('credits').innerHTML = Object.values(PHOTOS).map(p => `
+  <div class="credit"><img src="${p.src}" alt="${esc(p.alt)}" loading="lazy">
+    <div><h3>${esc(p.title)}</h3><p>By ${esc(p.author)} · License: ${licHTML(p)}</p>
+    <p><a href="${p.page}" target="_blank" rel="noopener">View source on Wikimedia Commons ↗</a></p></div></div>`).join('');
+
+/* ---------- Tree lines (generated, so every page gets its own forest) ---------- */
+function rng(seed){ return () => (seed = (seed * 9301 + 49297) % 233280) / 233280; }
+document.querySelectorAll('svg.treeline[data-trees]').forEach(svg => {
+  const [ , , W, H] = svg.getAttribute('viewBox').split(' ').map(Number);
+  const n = +svg.dataset.trees, r = rng(+svg.dataset.seed || 1), kinds = ['pine','pine','oak','birch'];
+  let out = '';
+  for (let i = 0; i < n; i++) {
+    const k = kinds[Math.floor(r()*kinds.length)];
+    const h = H * (0.45 + r()*0.55), w = k === 'oak' ? h : k === 'birch' ? h*0.5 : h*0.6;
+    const x = (i / n) * W + r() * (W / n) - w/2;
+    out += `<use href="#${k}" x="${x.toFixed(1)}" y="${(H-h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" opacity="${(0.6 + r()*0.4).toFixed(2)}"/>`;
+  }
+  svg.innerHTML = `<g fill="currentColor">${out}</g>`;
+});
+
+/* ---------- Editorial board (edit names & bios here) ---------- */
+const EDITORS = [
+  {role:"Executive Editor", name:"[Faculty name]", bio:"[Bio blurb: department, research interests, and why they joined Crossroads.]", ph:true},
+  {role:"Managing Editor", name:"Sawyer Gourgey", bio:"[Bio blurb: HAT program, CWRU. Founder of Crossroads Journal.]"},
+  {role:"Nonfiction Editor", name:"[Name]", bio:"[Bio blurb]", ph:true},
+  {role:"Fiction Editor", name:"[Name]", bio:"[Bio blurb]", ph:true},
+  {role:"Multimedia Editor", name:"[Name]", bio:"[Bio blurb]", ph:true},
+  {role:"Webmaster", name:"[Name]", bio:"[Bio blurb]", ph:true},
+  {role:"Reader", name:"[Name]", bio:"[Bio blurb]", ph:true},
+  {role:"Reader", name:"Open seat", bio:'We\'re looking for readers from campus and communities around the Great Lakes. <a href="#/involved">Learn more</a>.', open:true}
+];
+document.getElementById('editors').innerHTML = EDITORS.map(e => `
+  <div class="editor"><div class="avatar"><svg viewBox="0 0 200 90" preserveAspectRatio="xMidYMax slice"><g fill="currentColor"><use href="#pine" x="10" y="20" width="40" height="70"/><use href="#oak" x="50" y="30" width="60" height="60"/><use href="#pine" x="115" y="10" width="45" height="80"/><use href="#birch" x="160" y="35" width="28" height="55"/></g></svg><span>${e.open ? 'Could this be you?' : 'Photo'}</span></div>
+  <span class="role">${e.role}</span><h3>${e.ph ? `<span class="ph">${e.name}</span>` : e.name}</h3><p>${e.bio}</p></div>`).join('');
+
+/* ---------- Sample journal pieces (placeholders; replace with real work) ---------- */
+const PIECES = [
+  {type:"essay", label:"Essay", title:"The Building With No Windows", by:"[Contributor name]", art:"clay",
+   ex:"Every morning I walk my dog past a wall that hums.",
+   body:"Every morning I walk my dog past a wall that hums. It is the length of three city blocks and it has no windows, no doors I have ever seen open, no name on the front. My neighbor says it holds the internet. My dog says nothing, but she pulls harder on the leash when we pass."},
+  {type:"story", label:"Short story", title:"What the Lake Remembers", by:"[Contributor name]", art:"water",
+   ex:"In 2051 the lake began keeping a diary.",
+   body:"In 2051 the lake began keeping a diary. Nobody noticed at first; the entries were written in the rise and fall of the shoreline, a few centimeters at a time. It was a child, eventually, who learned to read it."},
+  {type:"media", label:"Photography", title:"Cooling Towers at Dusk", by:"[Contributor name]", art:"moss",
+   ex:"A photo series tracing one watershed from source to server.",
+   body:"[A photo series would display here as a gallery, with the artist's statement below. Images, captions, and alt text supplied by the contributor.]"},
+  {type:"media", label:"Audio", title:"Hum: Field Recordings from the Grid", by:"[Contributor name]", art:"water",
+   ex:"Twelve minutes of sound recorded at the fence line.",
+   body:"[An embedded audio player would appear here, with a transcript and the artist's notes on where and how each recording was made.]"},
+  {type:"essay", label:"Essay", title:"Who Was in the Room", by:"[Contributor name]", art:"moss",
+   ex:"The zoning meeting was scheduled for 2 p.m. on a Tuesday.",
+   body:"The zoning meeting was scheduled for 2 p.m. on a Tuesday. That, I would come to understand, was the first decision, and it had been made long before anyone asked for public comment."},
+  {type:"story", label:"Short story", title:"The Last Server in Ohio", by:"[Contributor name]", art:"clay",
+   ex:"When they finally turned it off, the silence was the loudest thing in the county.",
+   body:"When they finally turned it off, the silence was the loudest thing in the county. The children who had grown up beside it didn't know what to do with their ears."}
+];
+const ART = {
+  clay:'<svg class="art" viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="300" height="150" fill="#9a4722"/><circle cx="238" cy="40" r="18" fill="#f5f0e6" opacity=".55"/><g fill="#f5f0e6" opacity=".22"><use href="#pine" x="20" y="70" width="40" height="80"/><use href="#oak" x="60" y="92" width="58" height="58"/><use href="#pine" x="120" y="60" width="46" height="90"/><use href="#birch" x="170" y="96" width="28" height="54"/><use href="#pine" x="200" y="80" width="40" height="70"/><use href="#oak" x="238" y="100" width="50" height="50"/></g></svg>',
+  water:'<svg class="art" viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="300" height="150" fill="#2a5e6e"/><path d="M0 80 Q37 65 75 80 T150 80 T225 80 T300 80 V150 H0Z" fill="#f5f0e6" opacity=".14"/><path d="M0 100 Q37 85 75 100 T150 100 T225 100 T300 100 V150 H0Z" fill="#f5f0e6" opacity=".18"/><path d="M0 122 Q37 107 75 122 T150 122 T225 122 T300 122 V150 H0Z" fill="#f5f0e6" opacity=".22"/></svg>',
+  moss:'<svg class="art" viewBox="0 0 300 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="300" height="150" fill="#3b5a41"/><g fill="none" stroke="#f5f0e6" stroke-opacity=".3" stroke-width="2"><path d="M-10 40C40 10 70 70 120 40s80-30 120 0 60 20 80 0"/></g><g fill="#f5f0e6" opacity=".3"><use href="#leaf" x="30" y="22" width="22" height="13" transform="rotate(-30 41 28)"/><use href="#leaf" x="80" y="46" width="22" height="13" transform="rotate(30 91 52)"/><use href="#leaf" x="150" y="20" width="22" height="13" transform="rotate(-20 161 26)"/><use href="#leaf" x="210" y="40" width="22" height="13" transform="rotate(25 221 46)"/></g><g fill="#f5f0e6" opacity=".2"><use href="#pine" x="30" y="84" width="36" height="66"/><use href="#pine" x="180" y="74" width="42" height="76"/><use href="#oak" x="220" y="96" width="54" height="54"/></g></svg>'
+};
+const grid = document.getElementById('pieces');
+function renderPieces(f){
+  const list = PIECES.filter(p => f === 'all' || p.type === f);
+  grid.innerHTML = list.length ? '' : '<p class="empty">No pieces in this category yet.</p>';
+  list.forEach(p => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'piece';
+    b.innerHTML = ART[p.art] + `<span class="body"><span class="tag ${p.type==='essay'?'t-hum':p.type==='story'?'t-tech':'t-env'}">${p.label}</span><h3>${p.title}</h3><span class="by">${p.by}</span><span class="ex">${p.ex}</span><span class="read">Read preview →</span></span>`;
+    b.addEventListener('click', () => openReader(p));
+    grid.appendChild(b);
+  });
+}
+const reader = document.getElementById('reader');
+function openReader(p){
+  document.getElementById('reader-body').innerHTML =
+    `<span class="eyebrow">${p.label} · Sample placeholder</span><h2 id="reader-title">${p.title}</h2><p class="muted">${p.by}</p><div class="body-text"><p>${p.body}</p><p class="muted small" style="font-family:var(--sans)">[The full published piece would continue here, followed by a contributor bio.]</p></div>`;
+  reader.showModal();
+}
+reader.querySelector('.reader-close').addEventListener('click', () => reader.close());
+reader.addEventListener('click', e => { if (e.target === reader) reader.close(); }); /* click backdrop to close */
+document.querySelectorAll('.filters button').forEach(btn => btn.addEventListener('click', () => {
+  document.querySelectorAll('.filters button').forEach(b => b.setAttribute('aria-pressed','false'));
+  btn.setAttribute('aria-pressed','true');
+  renderPieces(btn.dataset.filter);
+}));
+renderPieces('all');
+
+/* ---------- Simple hash router: #/page or #/page/section ---------- */
+const PAGES = ['home','about','theme','journal','involved','credits'];
+const TITLES = {home:'Crossroads Journal', about:'About Us · Crossroads', theme:"This Year's Theme · Crossroads", journal:'The Journal · Crossroads', involved:'Get Involved · Crossroads', credits:'Photo Credits · Crossroads'};
+const nav = document.getElementById('mainnav');
+const menuBtn = document.querySelector('.menu-btn');
+function route(){
+  const parts = (location.hash.replace(/^#\/?/,'') || 'home').split('/');
+  const page = PAGES.includes(parts[0]) ? parts[0] : 'home';
+  const section = parts[1];
+  document.querySelectorAll('.page').forEach(el => el.classList.toggle('active', el.id === 'page-'+page));
+  document.querySelectorAll('nav.main a[data-page]').forEach(a => {
+    if (a.dataset.page === page) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
+  });
+  const target = section && document.getElementById(page + '-' + section);
+  if (target) requestAnimationFrame(() => scrollTo({top: target.getBoundingClientRect().top + scrollY - 76, behavior:'smooth'}));
+  else scrollTo({top:0});
+  document.title = TITLES[page];
+  nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false');
+}
+/* re-run the route when a link to the current hash is clicked again */
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="#/"]');
+  if (a && a.getAttribute('href') === location.hash) { e.preventDefault(); route(); }
+});
+menuBtn.addEventListener('click', () => { const o = nav.classList.toggle('open'); menuBtn.setAttribute('aria-expanded', o); });
+window.addEventListener('hashchange', route);
+route();
+
+/* submit button stays inactive until a real form URL replaces "#" */
+const sl = document.getElementById('submit-link');
+if (sl.getAttribute('href') === '#') {
+  sl.setAttribute('aria-disabled','true');
+  sl.addEventListener('click', e => { e.preventDefault(); const n = document.getElementById('submit-note'); n.classList.remove('flash'); void n.offsetWidth; n.classList.add('flash'); });
+} else { sl.target = '_blank'; sl.rel = 'noopener'; document.getElementById('submit-note').remove(); }
+
+/* dark-mode toggle (remembered per browser) */
+const root = document.documentElement, tbtn = document.getElementById('themeToggle');
+const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+const syncBtn = () => tbtn.textContent = isDark() ? 'Switch to light mode' : 'Switch to dark mode';
+try { const t = localStorage.getItem('cj-theme'); if (t) root.dataset.theme = t; } catch(e){}
+syncBtn();
+tbtn.addEventListener('click', () => {
+  root.dataset.theme = isDark() ? 'light' : 'dark'; syncBtn();
+  try { localStorage.setItem('cj-theme', root.dataset.theme); } catch(e){}
+});
+document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
